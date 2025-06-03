@@ -16,3 +16,40 @@
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+.todo-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.todo-list {
+    margin-top: 20px;
+}
+
+.no-todos {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-style: italic;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    gap: 10px;
+}
+
+.todo-item.completed .description {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.description {
+    flex: 1;
+}

@@ -1,1 +1,40 @@
-<p>task-explorer works!</p>
+<div class="task-explorer-container">
+    <div class="header">
+        <h1>Task Explorer</h1>
+        <div class="statistics">
+            <div class="stat-card">
+                <h3>Total Tasks</h3>
+                <p>{{ totalTasks }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Completed Tasks</h3>
+                <p>{{ completedTasks }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Pending Tasks</h3>
+                <p>{{ pendingTasks }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <button ejs-button cssClass="e-info" (click)="onExpandAll()">
+            Expand All
+        </button>
+        <button ejs-button cssClass="e-info" (click)="onCollapseAll()">
+            Collapse All
+        </button>
+    </div>
+
+    <div class="content">
+        <ejs-treeview
+            #tree
+            [fields]="field"
+            [showCheckBox]="showCheckBox"
+            (dataBound)="onDataBound($event)"
+            (nodeChecked)="onNodeChecked()"
+            (nodeExpanded)="onNodeExpanded($event)"
+            (nodeCollapsed)="onNodeCollapsed($event)"
+        ></ejs-treeview>
+    </div>
+</div>

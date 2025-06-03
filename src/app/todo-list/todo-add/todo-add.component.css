@@ -1,0 +1,30 @@
+.dialog-content {
+    padding: 20px;
+    min-width: 300px;
+}
+
+.dialog-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+:host ::ng-deep .e-dialog {
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+:host ::ng-deep .e-dialog .e-dlg-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+:host ::ng-deep .e-dialog .e-dlg-content {
+    padding: 0;
+}
+
+:host ::ng-deep .e-textbox {
+    width: 100%;
+    margin-bottom: 15px;
+}

@@ -1,0 +1,28 @@
+<button ejs-button (click)="showDialog()">Add Todo</button>
+
+<ejs-dialog
+    #dialog
+    [visible]="dialogVisible"
+    [header]="'Add a To-do Task'"
+    [showCloseIcon]="true"
+    [width]="'400px'"
+    [height]="'auto'"
+    [isModal]="true"
+    [animationSettings]="{ effect: 'Zoom' }"
+    (close)="hideDialog()"
+>
+    <div class="dialog-content">
+        <ejs-textbox
+            placeholder="Task description"
+            cssClass="e-outline"
+            floatLabelType="Auto"
+            [(ngModel)]="description"
+        ></ejs-textbox>
+        <div class="dialog-buttons">
+            <button ejs-button (click)="addTodo()" [isPrimary]="true">
+                Add
+            </button>
+            <button ejs-button (click)="hideDialog()">Cancel</button>
+        </div>
+    </div>
+</ejs-dialog>
