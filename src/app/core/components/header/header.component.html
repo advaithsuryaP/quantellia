@@ -3,7 +3,21 @@
         <div class="row">
             <div class="col-md-12">
                 <ejs-appbar colorMode="Primary">
-                    <span class="regular">Quantellia</span>
+                    <h1 class="regular">Quantellia</h1>
+                    <button
+                        ejs-button
+                        cssClass="e-inherit"
+                        [routerLink]="['/todo-list']"
+                    >
+                        Todo List
+                    </button>
+                    <button
+                        ejs-button
+                        cssClass="e-inherit"
+                        [routerLink]="['/task-explorer']"
+                    >
+                        Task Explorer
+                    </button>
                     <div class="e-appbar-spacer"></div>
                     <button
                         ejs-button

@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { TreeViewModule } from '@syncfusion/ej2-angular-navigations';
 
 @Component({
-    selector: 'app-todo',
+    selector: 'app-todo-list',
     imports: [TreeViewModule],
-    templateUrl: './todo.component.html',
-    styleUrl: './todo.component.css',
+    templateUrl: './todo-list.component.html',
+    styleUrl: './todo-list.component.css',
 })
-export default class TodoComponent {
+export default class TodoListComponent {
     // Hierarchical data source for TreeView component
     public continents: { [key: string]: Object }[] = [
         {

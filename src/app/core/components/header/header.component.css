@@ -1,53 +1,11 @@
-.default-appbar-section .regular,
-.default-appbar-section .prominent,
-.default-appbar-section .dense {
+.default-appbar-section .regular {
     margin: 0 5px;
 }
-.default-appbar-section .prominent {
-    align-self: center;
-    white-space: break-spaces;
-    text-align: inherit;
-    font-size: 35px;
-    line-height: 50px;
-}
-.default-appbar-section .e-appbar.prominent-appbar {
-    background-image: url("/assets/appbar/images/prominent.png");
-    background-size: 100% 400px;
-    color: #ffffff;
-    background-repeat: no-repeat;
-    height: 400px;
-}
-.default-appbar-section .prominent-appbar .e-inherit.e-btn {
-    background: transparent;
-}
-.default-appbar-section .prominent-appbar .e-inherit.e-btn:hover,
-.default-appbar-section .prominent-appbar .e-inherit.e-btn:focus,
-.default-appbar-section .prominent-appbar .e-inherit.e-btn:active,
-.default-appbar-section .prominent-appbar .e-inherit.e-btn.e-active,
-.default-appbar-section .prominent-appbar .e-inherit.e-css.e-btn:hover,
-.default-appbar-section
-    .prominent-appbar
-    .e-inherit.e-css.e-btn:focus
-    .default-appbar-section
-    .prominent-appbar
-    .e-inherit.e-css.e-btn:active
-    .default-appbar-section
-    .prominent-appbar
-    .e-inherit.e-css.e-btn.e-active {
-    background: rgba(255, 255, 255, 0.08);
-}
+
 .default-appbar-section h1 {
     font-size: 18px;
 }
 @media only screen and (max-width: 480px) {
-    .default-appbar-section .prominent {
-        font-size: 20px;
-        line-height: 28px;
-    }
-    .default-appbar-section .e-appbar.prominent-appbar {
-        background-size: 100% 250px;
-        height: 250px;
-    }
     .e-bigger .default-appbar-section .e-inherit.e-btn.login,
     .e-bigger.tailwind-dark
         .default-appbar-section
@@ -69,4 +27,8 @@
         padding-left: 7px;
         padding-right: 7px;
     }
+}
+
+.e-btn {
+    text-transform: none;
 }

@@ -5,7 +5,7 @@ export const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'to-do',
+        redirectTo: 'todo-list',
     },
     {
         path: 'login',
@@ -17,8 +17,8 @@ export const routes: Routes = [
         loadComponent: () => import('./core/components/shell/shell.component'),
         children: [
             {
-                path: 'to-do',
-                loadComponent: () => import('./todo/todo.component'),
+                path: 'todo-list',
+                loadComponent: () => import('./todo-list/todo-list.component'),
             },
             {
                 path: 'task-explorer',
