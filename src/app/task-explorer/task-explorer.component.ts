@@ -1,7 +1,6 @@
 import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import {
-    DataBoundEventArgs,
     NodeExpandEventArgs,
     TreeViewComponent,
     TreeViewModule,
@@ -14,7 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 @Component({
     selector: 'app-task-explorer',
     standalone: true,
-    imports: [CommonModule, TreeViewModule, CheckBoxModule, ButtonModule],
+    imports: [NgIf, TreeViewModule, CheckBoxModule, ButtonModule],
     templateUrl: './task-explorer.component.html',
     styleUrls: ['./task-explorer.component.css'],
 })
@@ -25,29 +24,36 @@ export default class TaskExplorerComponent implements OnInit, OnDestroy {
 
     // TreeView properties
     field: Object = {};
-    showCheckBox = true;
+    readonly showCheckBox: boolean = true;
 
-    // Task Explorer statistics
-    totalTasks: number = 0;
-    completedTasks: number = 0;
-    pendingTasks: number = 0;
+    isLoading: boolean = false;
+    fetchedTasks: TaskNode[] = [];
+    tasksForWhichSubTasksAreFetched: string[] = [];
 
     private _unsubscribeAll: Subject<void> = new Subject<void>();
 
     ngOnInit(): void {
-        this._taskExplorerService.tasks$
+        this.isLoading = true;
+        this._taskExplorerService
+            .fetchTaskExplorer()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((tasks) => {
-                this.field = {
-                    id: 'id',
-                    text: 'text',
-                    parentID: 'pid',
-                    dataSource: tasks,
-                    expanded: 'expanded',
-                    isChecked: 'isChecked',
-                    hasChildren: 'hasChildren',
-                };
+                this.isLoading = false;
+                this.fetchedTasks = [...tasks];
+                this._initDataToTreeView(tasks);
             });
+    }
+
+    private _initDataToTreeView(tasks: TaskNode[]): void {
+        this.field = {
+            id: 'id',
+            text: 'text',
+            parentID: 'pid',
+            dataSource: tasks,
+            expanded: 'expanded',
+            isChecked: 'isChecked',
+            hasChildren: 'hasChildren',
+        };
     }
 
     // Save the checked status of the task nodes
@@ -57,38 +63,52 @@ export default class TaskExplorerComponent implements OnInit, OnDestroy {
         );
     }
 
-    onDataBound(event: DataBoundEventArgs): void {
-        const completedTasks: number = event.data.filter(
-            (task) => task['isChecked']
-        ).length;
-
-        this.totalTasks = event.data.length;
-        this.completedTasks = completedTasks;
-        this.pendingTasks = this.totalTasks - completedTasks;
-    }
-
-    // Save the expanded state of the task nodes
-    onNodeExpanded(args: NodeExpandEventArgs): void {
-        if (args.nodeData) {
-            const nodeData = args.nodeData as Object as TaskNode;
-            this._taskExplorerService.updateExpandedState(nodeData);
+    onTaskExpanded(args: NodeExpandEventArgs): void {
+        const taskId: string = args.nodeData['id'] as string;
+        const parentTask = this.fetchedTasks.find((task) => task.id === taskId);
+        if (!parentTask) {
+            return;
         }
-    }
 
-    // Save the collapsed state of the task nodes
-    onNodeCollapsed(args: NodeExpandEventArgs): void {
-        if (args.nodeData) {
-            const nodeData = args.nodeData as Object as TaskNode;
-            this._taskExplorerService.updateExpandedState(nodeData);
+        if (this.tasksForWhichSubTasksAreFetched.includes(taskId)) {
+            this._updateExpandedState(taskId);
+            return;
         }
+
+        this.isLoading = true;
+        this._taskExplorerService
+            .fetchSubTasksById(taskId)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((tasks) => {
+                this.isLoading = false;
+                this.tasksForWhichSubTasksAreFetched.push(taskId);
+                parentTask.expanded = true;
+                this.fetchedTasks = [...this.fetchedTasks, ...tasks];
+                this._initDataToTreeView(this.fetchedTasks);
+            });
     }
 
-    onExpandAll(): void {
-        this.treeObj.expandAll();
+    onTaskCollapsed(args: NodeExpandEventArgs): void {
+        const taskId: string = args.nodeData['id'] as string;
+        this._updateExpandedState(taskId);
     }
 
-    onCollapseAll(): void {
-        this.treeObj.collapseAll();
+    private _updateExpandedState(taskId: string): void {
+        this.isLoading = true;
+        this._taskExplorerService
+            .updateExpandedState(taskId)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe({
+                next: (result) => {
+                    this.isLoading = false;
+                    this.fetchedTasks = this.fetchedTasks.map((task) =>
+                        task.id === taskId
+                            ? { ...task, expanded: result }
+                            : task
+                    );
+                    this._initDataToTreeView(this.fetchedTasks);
+                },
+            });
     }
 
     ngOnDestroy(): void {
