@@ -9,7 +9,7 @@ export const routes: Routes = [
     },
     {
         path: 'login',
-        loadChildren: () => import('./auth/auth.routes'),
+        loadComponent: () => import('./auth/auth.component'),
     },
     {
         path: '',
