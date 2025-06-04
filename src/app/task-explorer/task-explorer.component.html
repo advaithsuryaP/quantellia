@@ -1,6 +1,20 @@
 <div class="task-explorer-container">
     <div class="header">
         <h1>Task Explorer</h1>
+        <div class="statistics">
+            <div class="stat-card">
+                <h3>Total Tasks</h3>
+                <p>{{ totalTasks }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Completed Tasks</h3>
+                <p>{{ completedTasks }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Incomplete Tasks</h3>
+                <p>{{ incompleteTasks }}</p>
+            </div>
+        </div>
     </div>
 
     <div class="content">
@@ -17,5 +31,18 @@
             (nodeExpanding)="onTaskExpanded($event)"
             (nodeCollapsed)="onTaskCollapsed($event)"
         ></ejs-treeview>
+    </div>
+
+    <div class="note">
+        <h2>Note</h2>
+        <p>
+            Checkbox statistics are tracked manually using the TreeView’s
+            <code>checkedNodes</code> property. Since sub-tasks are loaded
+            lazily upon expansion, only the visible (fetched) nodes are tracked
+            and updated for completion status. This approach ensures performance
+            efficiency while maintaining accurate state sync between the UI and
+            the internal task model without prematurely loading hidden child
+            nodes.
+        </p>
     </div>
 </div>

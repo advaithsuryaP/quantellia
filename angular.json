@@ -30,6 +30,7 @@
                             "node_modules/@syncfusion/ej2-buttons/styles/material.css",
                             "node_modules/@syncfusion/ej2-inputs/styles/material.css",
                             "node_modules/@syncfusion/ej2-popups/styles/material.css",
+                            "node_modules/@syncfusion/ej2-angular-lists/styles/material.css",
                             "node_modules/@syncfusion/ej2-angular-navigations/styles/material.css"
                         ],
                         "scripts": []

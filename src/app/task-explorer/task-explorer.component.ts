@@ -30,6 +30,11 @@ export default class TaskExplorerComponent implements OnInit, OnDestroy {
     readonly autoCheck: boolean = false;
     readonly showCheckBox: boolean = true;
 
+    // Task Explorer Statistics
+    totalTasks: number = 0;
+    completedTasks: number = 0;
+    incompleteTasks: number = 0;
+
     isLoading: boolean = false;
     fetchedTasks: TaskNode[] = [];
     tasksForWhichSubTasksAreFetched: string[] = [];
@@ -58,6 +63,10 @@ export default class TaskExplorerComponent implements OnInit, OnDestroy {
             isChecked: 'isChecked',
             hasChildren: 'hasChildren',
         };
+
+        this.totalTasks = tasks.length;
+        this.completedTasks = tasks.filter((task) => task.isChecked).length;
+        this.incompleteTasks = this.totalTasks - this.completedTasks;
     }
 
     /**
