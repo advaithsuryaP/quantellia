@@ -118,10 +118,20 @@ export class TaskExplorerService {
      * @returns Observable<TaskNode[]>
      */
     fetchTaskExplorer(): Observable<TaskNode[]> {
-        const result = this._tasks.filter((task) => !task.pid);
-        return of(result).pipe(delay(1000));
+        const result = this._tasks.filter(
+            (task) =>
+                !task.pid ||
+                (task.pid &&
+                    this._tasks.find((t) => t.id === task.pid)?.expanded)
+        );
+        return of(result).pipe(delay(500));
     }
 
+    /**
+     * Fetch the sub tasks of a task by its id
+     * @param taskId - The id of the task
+     * @returns Observable<TaskNode[]> - The sub tasks of the task
+     */
     fetchSubTasksById(taskId: string): Observable<TaskNode[]> {
         const subTasks = this._tasks.filter((task) => task.pid === taskId);
         const updatedTasks = this._tasks.map((task) =>
@@ -129,15 +139,26 @@ export class TaskExplorerService {
         );
         this._tasks = [...updatedTasks];
 
-        return of(subTasks).pipe(delay(1000));
+        return of(subTasks).pipe(delay(300));
     }
 
-    updateTaskCompletion(checkedNodes: string[]): void {
-        const updatedTasks = this._tasks.map((task) => ({
-            ...task,
-            isChecked: checkedNodes.includes(task.id),
-        }));
-        this._tasks = updatedTasks;
+    /**
+     * Update the completion status of a task
+     * @param payload - The ids of the tasks to update
+     * @returns Observable<boolean> - The new completion status of the task
+     */
+    updateTaskCompletion(payload: string[]): Observable<boolean> {
+        const updatedTasks = this._tasks.map((task) => {
+            if (payload.includes(task.id)) {
+                return {
+                    ...task,
+                    isChecked: true,
+                };
+            }
+            return { ...task, isChecked: false };
+        });
+        this._tasks = [...updatedTasks];
+        return of(true).pipe(delay(200));
     }
 
     /**

@@ -1,6 +1,7 @@
 import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgIf } from '@angular/common';
 import {
+    NodeCheckEventArgs,
     NodeExpandEventArgs,
     TreeViewComponent,
     TreeViewModule,
@@ -9,6 +10,8 @@ import { ButtonModule, CheckBoxModule } from '@syncfusion/ej2-angular-buttons';
 import { TaskExplorerService } from '../core/services/task-explorer.service';
 import { TaskNode } from '../core/models/task-node.model';
 import { Subject, takeUntil } from 'rxjs';
+import { enableRipple } from '@syncfusion/ej2-base';
+enableRipple(true);
 
 @Component({
     selector: 'app-task-explorer',
@@ -24,6 +27,7 @@ export default class TaskExplorerComponent implements OnInit, OnDestroy {
 
     // TreeView properties
     field: Object = {};
+    readonly autoCheck: boolean = false;
     readonly showCheckBox: boolean = true;
 
     isLoading: boolean = false;
@@ -56,13 +60,32 @@ export default class TaskExplorerComponent implements OnInit, OnDestroy {
         };
     }
 
-    // Save the checked status of the task nodes
-    onNodeChecked(): void {
-        this._taskExplorerService.updateTaskCompletion(
-            this.treeObj.checkedNodes
-        );
+    /**
+     * Update the completion status of a task
+     * @param args - The event arguments
+     */
+    onNodeChecked(args: NodeCheckEventArgs): void {
+        this.isLoading = true;
+        this._taskExplorerService
+            .updateTaskCompletion(this.treeObj.checkedNodes)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe({
+                next: (_) => {
+                    this.fetchedTasks = this.fetchedTasks.map((task) =>
+                        this.treeObj.checkedNodes.includes(task.id)
+                            ? { ...task, isChecked: true }
+                            : { ...task, isChecked: false }
+                    );
+                    this._initDataToTreeView([...this.fetchedTasks]);
+                    this.isLoading = false;
+                },
+            });
     }
 
+    /**
+     * Update the expanded state of a task
+     * @param args - The event arguments
+     */
     onTaskExpanded(args: NodeExpandEventArgs): void {
         const taskId: string = args.nodeData['id'] as string;
         const parentTask = this.fetchedTasks.find((task) => task.id === taskId);
@@ -88,11 +111,19 @@ export default class TaskExplorerComponent implements OnInit, OnDestroy {
             });
     }
 
+    /**
+     * Update the collapsed state of a task
+     * @param args - The event arguments
+     */
     onTaskCollapsed(args: NodeExpandEventArgs): void {
         const taskId: string = args.nodeData['id'] as string;
         this._updateExpandedState(taskId);
     }
 
+    /**
+     * Update the expanded state of a task
+     * @param taskId - The id of the task
+     */
     private _updateExpandedState(taskId: string): void {
         this.isLoading = true;
         this._taskExplorerService

@@ -11,8 +11,9 @@
         <ejs-treeview
             #tree
             [fields]="field"
+            [autoCheck]="autoCheck"
             [showCheckBox]="showCheckBox"
-            (nodeChecked)="onNodeChecked()"
+            (nodeChecked)="onNodeChecked($event)"
             (nodeExpanding)="onTaskExpanded($event)"
             (nodeCollapsed)="onTaskCollapsed($event)"
         ></ejs-treeview>
