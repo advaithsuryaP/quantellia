@@ -32,3 +32,34 @@
 .e-btn {
     text-transform: none;
 }
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.username {
+    color: white;
+    font-size: 0.9rem;
+}
+
+.logout {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+}
+
+.logout:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.login {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+}
+
+.login:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}

@@ -19,10 +19,13 @@ export const AuthGuard: CanActivateFn | CanActivateChildFn = (
     return authService.check().pipe(
         switchMap((isAuthenticated) => {
             if (!isAuthenticated) {
-                const urlTree = router.parseUrl('/login');
+                // Store the attempted URL for redirecting after login
+                const returnUrl = state.url;
+                const urlTree = router.parseUrl(
+                    `/login?returnUrl=${encodeURIComponent(returnUrl)}`
+                );
                 return of(urlTree);
             }
-
             return of(true);
         })
     );

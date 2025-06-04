@@ -4,28 +4,52 @@
             <div class="col-md-12">
                 <ejs-appbar colorMode="Primary">
                     <h1 class="regular">Quantellia</h1>
-                    <button
-                        ejs-button
-                        cssClass="e-inherit"
-                        [routerLink]="['/todo-list']"
-                    >
-                        Todo List
-                    </button>
-                    <button
-                        ejs-button
-                        cssClass="e-inherit"
-                        [routerLink]="['/task-explorer']"
-                    >
-                        Task Explorer
-                    </button>
+
+                    <!-- Navigation buttons - only show when logged in -->
+                    <ng-container *ngIf="isLoggedIn$ | async">
+                        <button
+                            ejs-button
+                            cssClass="e-inherit"
+                            [routerLink]="['/todo-list']"
+                        >
+                            Todo List
+                        </button>
+                        <button
+                            ejs-button
+                            cssClass="e-inherit"
+                            [routerLink]="['/task-explorer']"
+                        >
+                            Task Explorer
+                        </button>
+                    </ng-container>
+
                     <div class="e-appbar-spacer"></div>
-                    <button
-                        ejs-button
-                        cssClass="e-inherit login"
-                        [routerLink]="['/login']"
-                    >
-                        Login
-                    </button>
+
+                    <!-- User section -->
+                    <ng-container *ngIf="isLoggedIn$ | async; else loginButton">
+                        <div class="user-section">
+                            <span class="username">
+                                Welcome, {{ (currentUser$ | async)?.username }}
+                            </span>
+                            <button
+                                ejs-button
+                                cssClass="e-inherit logout"
+                                (click)="logout()"
+                            >
+                                Logout
+                            </button>
+                        </div>
+                    </ng-container>
+
+                    <ng-template #loginButton>
+                        <button
+                            ejs-button
+                            cssClass="e-inherit login"
+                            [routerLink]="['/login']"
+                        >
+                            Login
+                        </button>
+                    </ng-template>
                 </ejs-appbar>
             </div>
         </div>

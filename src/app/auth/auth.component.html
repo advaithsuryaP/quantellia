@@ -1,1 +1,32 @@
-<p>auth works!</p>
+<div class="login-container">
+    <div class="login-form">
+        <h2>Login</h2>
+        <div class="form-group">
+            <ejs-textbox
+                [(ngModel)]="username"
+                placeholder="Username"
+                floatLabelType="Auto"
+                [showClearButton]="true"
+            >
+            </ejs-textbox>
+        </div>
+        <div class="form-group">
+            <ejs-textbox
+                [(ngModel)]="password"
+                type="password"
+                placeholder="Password"
+                floatLabelType="Auto"
+                [showClearButton]="true"
+            >
+            </ejs-textbox>
+        </div>
+        <div class="error-message" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </div>
+        <div class="form-group">
+            <button ejs-button (click)="onSubmit()" cssClass="e-primary">
+                Login
+            </button>
+        </div>
+    </div>
+</div>
