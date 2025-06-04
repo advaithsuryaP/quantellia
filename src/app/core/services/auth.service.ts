@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
+import { APP_CONSTANTS } from '../app.constants';
 
 interface User {
     username: string;
@@ -14,14 +15,16 @@ export class AuthService {
     private currentUser = new BehaviorSubject<User | null>(null);
 
     login(username: string, password: string): Observable<boolean> {
-        // This is a mock implementation. In a real app, you would make an HTTP call to your backend
-        if (username === 'admin' && password === 'admin') {
+        if (
+            username === APP_CONSTANTS.AUTH.USERNAME &&
+            password === APP_CONSTANTS.AUTH.PASSWORD
+        ) {
             const user: User = {
                 username: username,
-                token: 'dummy-token',
+                token: APP_CONSTANTS.AUTH.TOKEN,
             };
-            localStorage.setItem('token', user.token);
-            localStorage.setItem('username', user.username);
+            localStorage.setItem(APP_CONSTANTS.KEYS.TOKEN, user.token);
+            localStorage.setItem(APP_CONSTANTS.KEYS.USERNAME, user.username);
             this.currentUser.next(user);
             this.isAuthenticated.next(true);
             return of(true);
@@ -30,15 +33,15 @@ export class AuthService {
     }
 
     logout(): void {
-        localStorage.removeItem('token');
-        localStorage.removeItem('username');
+        localStorage.removeItem(APP_CONSTANTS.KEYS.TOKEN);
+        localStorage.removeItem(APP_CONSTANTS.KEYS.USERNAME);
         this.currentUser.next(null);
         this.isAuthenticated.next(false);
     }
 
     check(): Observable<boolean> {
-        const token = localStorage.getItem('token');
-        const username = localStorage.getItem('username');
+        const token = localStorage.getItem(APP_CONSTANTS.KEYS.TOKEN);
+        const username = localStorage.getItem(APP_CONSTANTS.KEYS.USERNAME);
         const isAuthenticated = !!token;
 
         if (isAuthenticated && username) {

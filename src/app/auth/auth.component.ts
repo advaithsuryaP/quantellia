@@ -5,6 +5,7 @@ import { TextBoxModule } from '@syncfusion/ej2-angular-inputs';
 import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../core/services/auth.service';
+import { take } from 'rxjs';
 
 @Component({
     selector: 'app-auth',
@@ -24,6 +25,7 @@ export default class AuthComponent {
     onSubmit(): void {
         this._authService
             .login(this.username, this.password)
+            .pipe(take(1))
             .subscribe((success) => {
                 if (success) {
                     const returnUrl =

@@ -32,17 +32,4 @@
             (nodeCollapsed)="onTaskCollapsed($event)"
         ></ejs-treeview>
     </div>
-
-    <div class="note">
-        <h2>Note</h2>
-        <p>
-            Checkbox statistics are tracked manually using the TreeView’s
-            <code>checkedNodes</code> property. Since sub-tasks are loaded
-            lazily upon expansion, only the visible (fetched) nodes are tracked
-            and updated for completion status. This approach ensures performance
-            efficiency while maintaining accurate state sync between the UI and
-            the internal task model without prematurely loading hidden child
-            nodes.
-        </p>
-    </div>
 </div>

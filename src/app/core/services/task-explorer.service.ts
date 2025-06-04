@@ -6,6 +6,7 @@ import { TaskNode } from '../models/task-node.model';
     providedIn: 'root',
 })
 export class TaskExplorerService {
+    // In house data for the task explorer
     private _tasks: TaskNode[] = [
         {
             id: '1',
